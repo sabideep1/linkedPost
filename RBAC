@@ -1,0 +1,61 @@
+Hello Everyone, I am going to post series of topics on Kubernetes and AKS Security.  #kubernetes #security #CKS #containersecurity 
+
+1. Secure Access to API Server
+
+Authentication and Authorization
+
+Difference between Azure RBAC for Kubernetes and Kubernetes RBAC with AAD integration
+
+Azure RBAC for Kubernetes Authorization: Required managed Azure AD Integration
+
+With Azure RBAC, you can assign built in Azure RBAC Role to the Azure AD users, groups, service principals. With this feature, cluster admins do not have to manage Kubernetes RBAC to provide access to AKS. This approach does not require to create ClusterRoleBindings and RoleBindings
+
+Roles Required:
+
+You need to provide 2 Roles.
+
+To download AKS credential [az aks get-credentials without --admin flag ]: 
+
+Azure Kubernetes User Role
+
+  2.  One of the 4 default built in Role based on the role
+
+Azure Kubernetes Service RBAC Reader
+
+Azure Kubernetes Service RBAC Writer
+
+Azure Kubernetes Service RBAC Admin
+
+Azure Kubernetes Service RBAC Cluster Admin
+
+You can also create custom Azure RBAC role and assign them to users/groups for granular permissions
+
+Ref: https://lnkd.in/g4dEdHsD
+
+ 
+
+ 
+
+ 
+
+Kubernetes RBAC with Azure AD integration :
+
+Roles Required:
+
+You need to provide 2 Roles.
+
+To download AKS credential [az aks get-credentials without --admin flag ]: 
+
+Azure Kubernetes User Role
+
+Cluster Admins have to manage Kubernetes ClusterRole/ClusterRoleBindings and Role/RoleBindings and associate them with users/groups 
+
+ 
+
+Ref: https://lnkd.in/gms_pkNH
+
+ 
+
+ 
+
+With both approaches, userneed to do device login for the first time and access token with expiry will be cached to your downloaded kubeconfig file
