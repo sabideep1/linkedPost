@@ -1,0 +1,49 @@
+AAD Pod Managed Identity: Standard Mode
+
+To connect to other Azure Services like DB, KeyVault, StorageAccount, EventHubs and other Azure Resources instead of using fixed credentials with in the pod, best practice is to use pod managed identity. Supported for Linux Containers only. Prerequisite: Virtual Machine Contributor and Virtual Machine Operator Role are needed for Managed Identity on AKS VMSS Resource Group
+
+When you deploy AAD pod Managed identity, it will install 4 different CRDs along with MIC and NMI pods. You have to create 4 different custom Objects
+
+Prerequisite: VMSS Contributor Role is needed for Managed Identity on AKS VMSS Resource Group
+
+ 
+
+AzureIdentity: User Assigned Managed Identity will be referenced in this Resource
+
+AzureIdentityBinding: It binds Azureidentity with the pods, which later assigned to a Node where pod is running. Pod should match selector aadpodidentity: <some val >.
+
+AzureAssignedIdentity: Once the selector matches, MIC will create AzureAssignedIdentity for the pod. MIC will assign User Created MI to underlying VMSS where pod is running
+
+AzurePodIdentityException: with this deployment, allows pod with matching labels to access IMDS without being intercepted by NMI pods. For system Pods
+
+ 
+
+ 
+
+MIC: Managed Identity Controller, responsible for creating/updating/deleting AzureAssignedIdentity
+
+NMI: Runs as Daemonset and Intercepts the security token request to IMDS by pods, validates the request, and fetch the token for the pod
+
+ 
+
+Steps to install:
+
+Create Managed Identity à Assign Contributor and Operator Role ->Install AAD pod identity --> Create AzureIdentity --> Created AzureIdentityBinding --> Create Pods with matching Selector of AzureIdentityBinding
+
+--> Provide Required access to Azure Resources for Managed Identity à Pod can connect to Azure Resource
+
+ 
+
+OpenSource Project:
+
+Ref: https://lnkd.in/gZFr3U9q
+
+ 
+
+Currently in Preview mode in Azure for support:
+
+Ref: https://lnkd.in/gVqx7HEi
+
+
+
+#security #CKS  #containersecurity #kubernetes
